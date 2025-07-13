@@ -21,10 +21,10 @@ def printBoard(board):
     print("   |   |   ")
 
 def isBoardFull(board):
-    if board.count(" ") > 1:
-        return False
-    else:
+    if board.count(" ") <= 1:
         return True
+    else:
+        return False
 
 def isWinner(b,l):    # b = board, l = letter
     # check all possibilities
@@ -55,6 +55,10 @@ def compMove():
     possibleMoves = [x for x,letter in enumerate(board) if letter == " " and x != 0]
     move = 0
 
+    # If no moves available, return 0 to indicate tie game
+    if len(possibleMoves) == 0:
+        return 0
+
     for let in ['O','X']:
         for i in possibleMoves:
             boardCopy = board[:]
@@ -82,10 +86,12 @@ def compMove():
         if i in [2,4,6,8]:
             edgeOpen.append(i)
 
-
     if len(edgeOpen) > 0:
         move = selectRandom(edgeOpen)
         return move
+    
+    # If we reach here, return 0 (shouldn't happen with proper logic)
+    return 0
 
 def selectRandom(list_):
     import random
@@ -114,7 +120,7 @@ def main():
 
             if move == 0:
                 print("Tie game")
-
+                break
             else:
                 insertLetter("O", move)
                 print(f"Computer place O on position {move}")
